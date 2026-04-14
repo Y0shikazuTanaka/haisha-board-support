@@ -14,7 +14,7 @@ const { title, description, slug } = Astro.props;
 // ドキュメント一覧を取得して並び替え
 const allDocs = await getCollection("docs");
 
-const categories = ["概要", "利用説明", "アドオン"];
+const categories = ["概要", "利用説明", "アドオン-事務効率化パック"];
 
 const groupedDocs = categories.map((cat) => {
   const items = allDocs
