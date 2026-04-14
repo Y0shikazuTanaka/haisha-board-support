@@ -2,7 +2,7 @@
 title: "支払管理"
 description: "協力会社への支払集計と管理"
 category: "アドオン-事務効率化パック"
-order: 2
+order: 3
 ---
 
 ![支払管理](/assets/docs/add_on/office-efficiency_pack/payment/shiharai_kanri.png)
