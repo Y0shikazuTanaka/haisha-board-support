@@ -2,7 +2,7 @@
 title: "点呼記録の入力と帳票作成"
 description: "配車データから法定帳票を作成"
 category: "アドオン-事務効率化パック"
-order: 3
+order: 4
 ---
 
 ![点呼記録簿](/assets/docs/add_on/office-efficiency_pack/tenko/tenko_input.png)

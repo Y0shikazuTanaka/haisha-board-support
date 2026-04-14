@@ -2,7 +2,7 @@
 title: "請求管理"
 description: "請求書の発行と売上管理"
 category: "アドオン-事務効率化パック"
-order: 1
+order: 2
 ---
 
 ![請求管理](/assets/docs/add_on/office-efficiency_pack/billing/seikyu_kanri.png)
