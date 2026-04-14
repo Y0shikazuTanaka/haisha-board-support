@@ -1,0 +1,113 @@
+---
+import Layout from "./Layout.astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export interface Props {
+  title: string;
+  description?: string;
+  slug?: string;
+}
+
+const { title, description, slug } = Astro.props;
+
+// ドキュメント一覧を取得して並び替え
+const allDocs = await getCollection("docs");
+
+const categories = ["概要", "利用説明", "アドオン-事務効率化パック"];
+
+const groupedDocs = categories.map((cat) => {
+  const items = allDocs
+    .filter((doc) => doc.data.category === cat)
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((doc) => {
+      const segment = doc.slug === "index" ? "" : doc.slug;
+      return {
+        title: doc.data.title,
+        href: `/docs/${segment}`,
+        active: doc.slug === slug,
+      };
+    });
+
+  // このカテゴリにアクティブなアイテムが含まれているか、または「概要」ならデフォルトで開く
+  const isOpen = items.some((item) => item.active) || cat === "概要";
+
+  return {
+    name: cat,
+    items,
+    isOpen,
+  };
+});
+---
+
+<Layout title={title}>
+  <div class="max-w-screen-xl mx-auto px-5">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 py-10">
+      <!-- Sidebar -->
+      <aside class="md:col-span-1">
+        <nav class="sticky top-24">
+          <p
+            class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-6"
+          >
+            取扱説明書 v0.3.0
+          </p>
+          <div class="space-y-4">
+            {
+              groupedDocs.map(
+                (group) =>
+                  group.items.length > 0 && (
+                    <details class="group" open={group.isOpen}>
+                      <summary class="flex items-center justify-between cursor-pointer list-none text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 hover:text-blue-600 transition ml-3">
+                        <span>{group.name}</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4 transition-transform group-open:rotate-180 text-slate-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </summary>
+                      <ul class="space-y-1 mb-6 ml-4">
+                        {group.items.map((item) => (
+                          <li>
+                            <a
+                              href={item.href}
+                              class={`block px-3 py-2 rounded-md transition text-sm ${
+                                item.active
+                                  ? "bg-blue-100 text-blue-700 font-bold"
+                                  : "text-slate-600 hover:bg-slate-100"
+                              }`}
+                            >
+                              {item.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )
+              )
+            }
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="md:col-span-3">
+        <div class="prose prose-slate max-w-none prose-headings:font-bold prose-a:text-blue-600">
+          <header class="mb-10 pb-10 border-b border-slate-200">
+            <h1 class="text-4xl font-bold text-slate-900 mb-4">{title}</h1>
+            {description && <p class="text-xl text-slate-500">{description}</p>}
+          </header>
+          <slot />
+        </div>
+      </main>
+    </div>
+  </div>
+</Layout>
