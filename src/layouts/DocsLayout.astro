@@ -27,7 +27,7 @@ const categories = [...manualCategories, ...otherCategories];
 const groupedDocs = categories.map((cat) => {
   const items = allDocs
     .filter((doc) => (doc.data.category || "その他") === cat)
-    .sort((a, b) => (a.data.order - b.data.order) || a.data.title.localeCompare(b.data.title))
+    .sort((a, b) => (a.data.order - b.data.order) || a.data.title.localeCompare(b.data.title, "ja"))
     .map((doc) => {
       const segment = doc.slug === "index" ? "" : doc.slug;
       return {

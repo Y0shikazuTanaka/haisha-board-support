@@ -46,4 +46,4 @@ export const collections = {
   'blog': blogCollection,
   'team': teamCollection,
   'docs': docsCollection,
-};
+};
