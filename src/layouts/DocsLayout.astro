@@ -2,6 +2,8 @@
 import Layout from "./Layout.astro";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import packageInfo from "../../package.json";
+
 
 export interface Props {
   title: string;
@@ -15,12 +17,12 @@ const { title, description, slug } = Astro.props;
 const allDocs = await getCollection("docs");
 
 const manualCategories = ["概要", "利用説明", "アドオン-事務効率化パック"];
-const categories = [...new Set([...manualCategories, ...allDocs.map(d => d.data.category).filter((c): c is string => !!c)])];
+const categories = [...new Set([...manualCategories, ...allDocs.map(d => d.data.category || "その他")])];
 
 
 const groupedDocs = categories.map((cat) => {
   const items = allDocs
-    .filter((doc) => doc.data.category === cat)
+    .filter((doc) => (doc.data.category || "その他") === cat)
     .sort((a, b) => (a.data.order - b.data.order) || a.data.title.localeCompare(b.data.title))
     .map((doc) => {
       const segment = doc.slug === "index" ? "" : doc.slug;
@@ -51,7 +53,7 @@ const groupedDocs = categories.map((cat) => {
           <p
             class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-6"
           >
-            取扱説明書 v0.3.0
+            取扱説明書 v{packageInfo.version}
           </p>
           <div class="space-y-4">
             {
