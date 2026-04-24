@@ -19,13 +19,13 @@ const categories = ["概要", "利用説明", "アドオン-事務効率化パ�
 const groupedDocs = categories.map((cat) => {
   const items = allDocs
     .filter((doc) => doc.data.category === cat)
-    .sort((a, b) => a.data.order - b.data.order)
+    .sort((a, b) => (a.data.order - b.data.order) || a.data.title.localeCompare(b.data.title))
     .map((doc) => {
       const segment = doc.slug === "index" ? "" : doc.slug;
       return {
         title: doc.data.title,
         href: `/docs/${segment}`,
-        active: doc.slug === slug,
+        active: doc.slug === (slug || "index"),
       };
     });
 
