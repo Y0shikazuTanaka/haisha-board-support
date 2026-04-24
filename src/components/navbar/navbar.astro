@@ -7,10 +7,17 @@ import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
 import { Image } from "astro:assets";
 import logo from "@/assets/app_icom_128x128.png";
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 const menuitems = [
   {
+    title: "取扱説明書",
+    path: `${base}/docs`,
+    badge: true,
+  },
+  {
     title: "プライバシーポリシー",
-    path: "/privacy",
+    path: `${base}/privacy`,
   },
   {
     title: "お問い合わせ (X/旧Twitter)",
@@ -24,7 +31,7 @@ const menuitems = [
   <header class="flex flex-col lg:flex-row justify-between items-center my-5">
     <Astronav>
       <div class="flex w-full lg:w-auto items-center justify-between">
-        <a href="/" class="flex gap-2 items-center text-lg font-bold text-slate-800">
+        <a href={import.meta.env.BASE_URL} class="flex gap-2 items-center text-lg font-bold text-slate-800">
           <Image src={logo} alt="Logo" class="w-8" />
           <span>ハイシャボード</span>
         </a>
