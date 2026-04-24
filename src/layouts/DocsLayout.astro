@@ -17,7 +17,11 @@ const { title, description, slug } = Astro.props;
 const allDocs = await getCollection("docs");
 
 const manualCategories = ["概要", "利用説明", "アドオン-事務効率化パック"];
-const categories = [...new Set([...manualCategories, ...allDocs.map(d => d.data.category || "その他")])];
+const docCategories = [...new Set(allDocs.map(d => d.data.category || "その他"))];
+const otherCategories = docCategories
+  .filter((c) => !manualCategories.includes(c))
+  .sort((a, b) => a.localeCompare(b, "ja"));
+const categories = [...manualCategories, ...otherCategories];
 
 
 const groupedDocs = categories.map((cat) => {
