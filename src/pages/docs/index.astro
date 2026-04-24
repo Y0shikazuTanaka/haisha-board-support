@@ -1,0 +1,20 @@
+---
+import { getEntry } from "astro:content";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+
+const entry = await getEntry("docs", "index");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await entry.render();
+---
+
+<DocsLayout 
+  title={entry.data.title} 
+  description={entry.data.description}
+  slug={entry.slug}
+>
+  <Content />
+</DocsLayout>

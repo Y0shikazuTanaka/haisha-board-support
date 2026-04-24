@@ -14,7 +14,9 @@ const { title, description, slug } = Astro.props;
 // ドキュメント一覧を取得して並び替え
 const allDocs = await getCollection("docs");
 
-const categories = ["概要", "利用説明", "アドオン-事務効率化パック"];
+const manualCategories = ["概要", "利用説明", "アドオン-事務効率化パック"];
+const categories = [...new Set([...manualCategories, ...allDocs.map(d => d.data.category).filter((c): c is string => !!c)])];
+
 
 const groupedDocs = categories.map((cat) => {
   const items = allDocs
@@ -29,8 +31,8 @@ const groupedDocs = categories.map((cat) => {
       };
     });
 
-  // このカテゴリにアクティブなアイテムが含まれているか、または「概要」ならデフォルトで開く
-  const isOpen = items.some((item) => item.active) || cat === "概要";
+  // このカテゴリにアクティブなアイテムが含まれているか、または最初のカテゴリならデフォルトで開く
+  const isOpen = items.some((item) => item.active) || cat === categories[0];
 
   return {
     name: cat,
